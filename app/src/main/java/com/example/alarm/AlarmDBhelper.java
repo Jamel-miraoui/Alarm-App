@@ -5,7 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 
+import androidx.annotation.RequiresApi;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class AlarmDBhelper extends SQLiteOpenHelper {
@@ -17,9 +20,9 @@ public class AlarmDBhelper extends SQLiteOpenHelper {
     private static final String don = "don";
     private static final String Statut = "Statut";
 
+
     private static final String REQUETE_CREATION_BD = "create table " + Table + " (" +
-            id + " integer primary key autoincrement, " + time + " TEXT not null, " + don + " TEXT not null, " +  // Added a space after "not null"
-            Statut + " TEXT not null, " + COLONNE_login + " TEXT not null, " + COLONNE_password + " TEXT not null);";
+            id + " integer primary key autoincrement, " + time + " TEXT not null, " + don + " TEXT not null, " + Statut + " TEXT not null);" ;
 
     public AlarmDBhelper(Context context, String nom, SQLiteDatabase.CursorFactory cursorfactory, int version) {
         super(context, nom , cursorfactory, version ); }
@@ -34,46 +37,41 @@ public class AlarmDBhelper extends SQLiteOpenHelper {
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE " + TableEtudiant + ";");
+        db.execSQL("DROP TABLE " + Table + ";");
         onCreate(db);
     }
     public void insertAlarm(Alarm alarm) {
         SQLiteDatabase maDB = this.getWritableDatabase();
         ContentValues valeurs = new ContentValues();
-        valeurs.put(COLONNE_prenom, etudiant.getPrenom());
-        valeurs.put(COLONNE_nom, etudiant.getNom());
-        valeurs.put(COLONNE_classe, etudiant.getClasse());
-        valeurs.put(COLONNE_login, etudiant.getLogin());
-        valeurs.put(COLONNE_password, etudiant.getPassword());
-        maDB.insert(TableEtudiant, null, valeurs);
+        valeurs.put(time, alarm.getTime().toString()) ;
+        valeurs.put(don, alarm.getDayTime());
+        valeurs.put(Statut, alarm.isStatut());
+        maDB.insert(Table, null, valeurs);
         maDB.close();
     }
-    public ArrayList<Etudiants> getAllEtudiants() {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public ArrayList<Alarm> getAllAlram() {
         SQLiteDatabase maDb = this.getWritableDatabase();
-        Cursor c = maDb.query(TableEtudiant, new String[]{COLONNE_id, COLONNE_prenom, COLONNE_nom, COLONNE_classe, COLONNE_login, COLONNE_password}, null, null, null, null, null);
-        return cursortoEtudiants(c);
-    }
+        Cursor c = maDb.query(Table, new String[]{time,don,Statut}, null, null, null, null, null);
+        return cursortoAlarms(c);}
 
-    private ArrayList<Etudiants> cursortoEtudiants(Cursor c) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private ArrayList<Alarm> cursortoAlarms(Cursor c) {
         if (c.getCount() == 0)
             return new ArrayList<>();
 
-        ArrayList<Etudiants> etudiantList = new ArrayList<>(c.getCount());
+        ArrayList<Alarm> alarmList = new ArrayList<>(c.getCount());
         c.moveToFirst();
-
         do {
-            Etudiants etudiant = new Etudiants();
-            etudiant.setId(c.getInt(0));
-            etudiant.setPrenom(c.getString(1));
-            etudiant.setNom(c.getString(2));
-            etudiant.setClasse(c.getString(3));
-            etudiant.setLogin(c.getString(4));
-            etudiant.setPassword(c.getString(5));
-            etudiantList.add(etudiant);
+            Alarm alarm = new Alarm();
+            alarm.setId(c.getInt(0));
+            alarm.setTime(alarm.stringToTime(c.getString(1)));
+            alarm.setDayTime(c.getString(2));
+            alarm.setStatut(Boolean.parseBoolean(c.getString(3)));
+            alarmList.add(alarm);
         } while (c.moveToNext());
+
         c.close();
-        return etudiantList;
+        return alarmList;
     }
-
-
 }
