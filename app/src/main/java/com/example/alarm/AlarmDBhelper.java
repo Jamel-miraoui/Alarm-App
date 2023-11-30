@@ -47,7 +47,7 @@ public class AlarmDBhelper extends SQLiteOpenHelper {
         valeurs.put(don, alarm.getDayTime());
         valeurs.put(Statut, alarm.isStatut());
         maDB.insert(Table, null, valeurs);
-        maDB.close();
+//        maDB.close();
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     public ArrayList<Alarm> getAllAlram() {

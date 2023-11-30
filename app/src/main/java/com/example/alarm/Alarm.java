@@ -31,7 +31,6 @@ public class Alarm {
     public void setId(int id) {
         this.id = id;
     }
-
     public Alarm(LocalTime time, String dayTime, boolean statut) {
         this.time = time;
         this.dayTime = dayTime;

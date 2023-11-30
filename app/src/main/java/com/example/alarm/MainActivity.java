@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -36,12 +37,27 @@ public class MainActivity extends AppCompatActivity {
         Button addAlarmButton = findViewById(R.id.addAlarmButton);
         addAlarmButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-
+                Intent intent;
+                intent = new Intent(MainActivity.this,MainActivity2.class);
+                startActivityForResult(intent,1);
             }
         });
-
-
-
-
     }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case (1):
+                switch (resultCode) {
+                    case RESULT_CANCELED:
+                        Toast.makeText(this, "Edit cansel", Toast.LENGTH_SHORT).show();
+                        return;
+                    case RESULT_OK:
+                        Toast.makeText(this, "Done", Toast.LENGTH_SHORT).show();
+                }
+
+        }// switch
+    }
+
+
 }

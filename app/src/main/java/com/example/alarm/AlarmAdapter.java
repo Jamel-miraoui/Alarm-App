@@ -26,7 +26,6 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.alarm_item_layout, parent, false);
         }
-
         Alarm alarm = getItem(position);
 
         if (alarm != null) {
