@@ -30,7 +30,7 @@ public class MainActivity2 extends AppCompatActivity {
                 int min = timePicker.getMinute();
                 Alarm alarm = new Alarm();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    alarm.setTime(alarm.stringToTime(hour +":"+ min));
+                    alarm.setTime(hour +":"+ min);
                     if( hour > 12) {alarm.setDayTime("PM") ; } else{alarm.setDayTime("AM");}
                     alarm.setStatut(true);
                 }

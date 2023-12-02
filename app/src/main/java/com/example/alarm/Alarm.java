@@ -16,7 +16,7 @@ import java.util.List;
 public class Alarm {
 
     int id ;
-    LocalTime time ;
+    String time ;
     String dayTime;
     boolean Statut ;
 
@@ -27,28 +27,23 @@ public class Alarm {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
-    public Alarm(LocalTime time, String dayTime, boolean statut) {
+    public Alarm(String time, String dayTime, boolean statut) {
         this.time = time;
         this.dayTime = dayTime;
         Statut = statut;
     }
-
-    public LocalTime getTime() {
+    public String getTime() {
         return time;
     }
-
-    public void setTime(LocalTime time) {
+    public void setTime(String time) {
         this.time = time;
     }
-
     public String getDayTime() {
         return dayTime;
     }
-
     public void setDayTime(String dayTime) {
         this.dayTime = dayTime;
     }
@@ -60,14 +55,4 @@ public class Alarm {
     public void setStatut(boolean statut) {
         Statut = statut;
     }
-    public  String timeToString(){
-        return time.toString();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public  LocalTime stringToTime(String string){
-        LocalTime localTime = LocalTime.parse(string);
-        return localTime;
-    }
-
 }

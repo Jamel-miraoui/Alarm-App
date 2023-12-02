@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -23,14 +24,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarmlist);
-        alarmList = new ArrayList<>();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            alarmList.add(new Alarm(LocalTime.parse("08:00"), "AM", true));
-            alarmList.add(new Alarm(LocalTime.parse("19:30"), "PM", false));
+        AlarmDBhelper bd = new AlarmDBhelper(MainActivity.this);
+        alarmList = bd.getAllAlram();
+
+        for (Alarm alarm:alarmList
+             ) {
+            Log.i("alarm", "Time: " +alarm.getTime() +"Don : "+ alarm.getDayTime()+"Statut :" +alarm.isStatut()+"Id :"  + alarm.getId());
         }
         alarmAdapter = new AlarmAdapter(this, R.layout.alarm_item_layout, alarmList);
         ListView alarmListView = findViewById(R.id.alarmListView);
         alarmListView.setAdapter(alarmAdapter);
+
 
 
         // Handle Add Alarm button click
@@ -43,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {

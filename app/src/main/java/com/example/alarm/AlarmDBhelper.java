@@ -1,5 +1,6 @@
 package com.example.alarm;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -19,6 +20,7 @@ public class AlarmDBhelper extends SQLiteOpenHelper {
     private static final String time = "time";
     private static final String don = "don";
     private static final String Statut = "Statut";
+
 
 
     private static final String REQUETE_CREATION_BD = "create table " + Table + " (" +
@@ -52,26 +54,25 @@ public class AlarmDBhelper extends SQLiteOpenHelper {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public ArrayList<Alarm> getAllAlram() {
         SQLiteDatabase maDb = this.getWritableDatabase();
-        Cursor c = maDb.query(Table, new String[]{time,don,Statut}, null, null, null, null, null);
+        Cursor c = maDb.query(Table, new String[]{time,don,Statut,id}, null, null, null, null, null);
         return cursortoAlarms(c);}
 
+    @SuppressLint("Range")
     @RequiresApi(api = Build.VERSION_CODES.O)
     private ArrayList<Alarm> cursortoAlarms(Cursor c) {
         if (c.getCount() == 0)
             return new ArrayList<>();
-
         ArrayList<Alarm> alarmList = new ArrayList<>(c.getCount());
         c.moveToFirst();
         do {
             Alarm alarm = new Alarm();
-            alarm.setId(c.getInt(0));
-            alarm.setTime(alarm.stringToTime(c.getString(1)));
-            alarm.setDayTime(c.getString(2));
-            alarm.setStatut(Boolean.parseBoolean(c.getString(3)));
+            alarm.setTime(c.getString(0));
+            alarm.setDayTime(c.getString(1));
+            alarm.setStatut(Integer.parseInt(c.getString(2)) == 1);
+            alarm.setId(c.getInt(3));
             alarmList.add(alarm);
         } while (c.moveToNext());
-
-        c.close();
+//        c.close();
         return alarmList;
     }
 }
