@@ -1,38 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <!-- alarm_item_layout.xml -->
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp"
+    android:background="@drawable/rounded_background">
+
+    <!-- Alarm Time and Days Details -->
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-        <!-- Alarm Time and Days Details -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/alarmTimeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Alarm Time"/>
-
-            <TextView
-                android:id="@+id/alarmDaysTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="AM/PM"/>
-        </LinearLayout>
-        <!-- Activate/Deactivate Button -->
-        <Button
-            android:id="@+id/activateButton"
+        <TextView
+            android:id="@+id/alarmTimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Activate/Deactivate"/>
+            android:text="Alarm Time"
+            android:textSize="18sp"
+            android:textColor="#1E88E5"/>
+
+        <TextView
+            android:id="@+id/alarmDaysTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AM/PM"
+            android:textSize="16sp"
+            android:textColor="#546E7A"/>
     </LinearLayout>
+
+    <!-- Activate/Deactivate Button -->
+    <Button
+        android:id="@+id/activateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Activate/Deactivate"
+        android:textSize="14sp"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rounded_button"/>
+
+
 </LinearLayout>
