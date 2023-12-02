@@ -20,7 +20,7 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alrmedit);
         Button save = (Button)findViewById(R.id.saveButton);
-        Button cansel = (Button)findViewById(R.id.canselButton);
+        Button cansel = (Button)findViewById(R.id.cancelButton);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

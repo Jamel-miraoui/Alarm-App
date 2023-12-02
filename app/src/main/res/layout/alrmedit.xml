@@ -4,28 +4,41 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@drawable/rounded_background">
+
     <TimePicker
         android:id="@+id/timePicker"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:textColor="#1E88E5" />
 
     <Button
         android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save"/>
+        android:text="Save"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rounded_button"
+        android:layout_marginTop="16dp"/>
 
     <Button
-        android:id="@+id/canselButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/cancelButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="cansel"></Button>
+        android:text="Cancel"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rounded_button"
+        android:layout_marginTop="8dp"/>
 
     <TextView
         android:id="@+id/text"
         android:text=""
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        ></TextView>
+        android:textSize="16sp"
+        android:textColor="#546E7A"
+        android:layout_marginTop="16dp"/>
 </LinearLayout>
