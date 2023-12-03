@@ -27,15 +27,15 @@ public class MainActivity extends AppCompatActivity {
         AlarmDBhelper bd = new AlarmDBhelper(MainActivity.this);
         alarmList = bd.getAllAlram();
 
-        for (Alarm alarm:alarmList
-             ) {
+        Intent alarmIntent = new Intent(this, MonServive.class);
+        startService(alarmIntent);
+
+        for (Alarm alarm:alarmList) {
             Log.i("alarm", "Time: " +alarm.getTime() +"Don : "+ alarm.getDayTime()+"Statut :" +alarm.isStatut()+"Id :"  + alarm.getId());
         }
         alarmAdapter = new AlarmAdapter(this, R.layout.alarm_item_layout, alarmList);
         ListView alarmListView = findViewById(R.id.alarmListView);
         alarmListView.setAdapter(alarmAdapter);
-
-
 
         // Handle Add Alarm button click
         Button addAlarmButton = findViewById(R.id.addAlarmButton);
@@ -61,6 +61,4 @@ public class MainActivity extends AppCompatActivity {
 
         }// switch
     }
-
-
 }

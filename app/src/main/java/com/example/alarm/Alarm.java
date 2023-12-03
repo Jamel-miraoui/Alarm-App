@@ -9,11 +9,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Alarm {
+public class Alarm implements Serializable {
 
     int id ;
     String time ;
@@ -21,7 +22,6 @@ public class Alarm {
     boolean Statut ;
 
     public Alarm() {
-
     }
 
     public int getId() {

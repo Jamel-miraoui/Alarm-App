@@ -19,7 +19,6 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
     public AlarmAdapter(@NonNull Context context, int resource, @NonNull List<Alarm> alarms) {
         super(context, resource, alarms);
     }
-
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -27,7 +26,6 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.alarm_item_layout, parent, false);
         }
         Alarm alarm = getItem(position);
-
         if (alarm != null) {
             TextView timeTextView = convertView.findViewById(R.id.alarmTimeTextView);
             TextView amPmTextView = convertView.findViewById(R.id.alarmDaysTextView);
