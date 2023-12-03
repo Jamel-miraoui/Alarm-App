@@ -15,7 +15,7 @@
 12. Stopping notifications or sound effectively involves starting another app within a service.
 
 ## Proposed Solution:
-Considering the complexities and challenges identified, it might be more feasible to pivot the app's functionality to a simpler and user-friendly chronometer application.
+Considering the complexities and challenges identified, it might be more feasible to pivot the app's functionality to a simpler and user-friendly chronometer application. we can work on this as an indepandent project in the futer 
 
 ## Chronometer App Features:
 - Set a specific time and start the countdown.
