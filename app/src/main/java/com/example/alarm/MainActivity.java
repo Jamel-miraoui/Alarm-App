@@ -1,8 +1,6 @@
 package com.example.alarm;
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,9 +25,6 @@ public class MainActivity extends AppCompatActivity {
         AlarmDBhelper bd = new AlarmDBhelper(MainActivity.this);
         alarmList = bd.getAllAlram();
 
-        Intent alarmIntent = new Intent(this, MonServive.class);
-        startService(alarmIntent);
-
         for (Alarm alarm:alarmList) {
             Log.i("alarm", "Time: " +alarm.getTime() +"Don : "+ alarm.getDayTime()+"Statut :" +alarm.isStatut()+"Id :"  + alarm.getId());
         }
@@ -46,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent,1);
             }
         });
+        Intent alarmIntent = new Intent(this, MonServive.class);
+        startService(alarmIntent);
     }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -58,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
                     case RESULT_OK:
                         Toast.makeText(this, "Done", Toast.LENGTH_SHORT).show();
                 }
-
         }// switch
     }
 }

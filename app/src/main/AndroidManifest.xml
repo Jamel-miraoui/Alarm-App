@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Alarm"
         tools:targetApi="31">
         <activity
+            android:name=".AlarmNt"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity2"
             android:exported="false" />
         <activity
@@ -24,7 +27,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".MonServive"></service>
+
+        <service
+            android:name=".MonServive"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":my_background_process" />
     </application>
 
 </manifest>
