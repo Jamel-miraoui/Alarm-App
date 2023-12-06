@@ -22,41 +22,13 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private List<Alarm> alarmList;
     private AlarmAdapter alarmAdapter;
-
-    private MonServive monService;
-    private boolean isBound = false;
-
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            MonServive.MonBinder binder = (MonServive.MonBinder) service;
-            monService = binder.getService();
-            isBound = true;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                monService.onStartCommand();
-            }
-
-            // Now you can call methods on the MonService instance
-            // For example:
-            // monService.doSomething();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            isBound = false;
-        }
-
-    };
+    AlarmDBhelper bd = new AlarmDBhelper(MainActivity.this);
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarmlist);
-        AlarmDBhelper bd = new AlarmDBhelper(MainActivity.this);
         alarmList = bd.getAllAlram();
-        for (Alarm alarm:alarmList) {
-            Log.i("alarm", "Time: " +alarm.getTime() +"Don : "+ alarm.getDayTime()+"Statut :" +alarm.isStatut()+"Id :"  + alarm.getId());
-        }
         alarmAdapter = new AlarmAdapter(this, R.layout.alarm_item_layout, alarmList);
         ListView alarmListView = findViewById(R.id.alarmListView);
         alarmListView.setAdapter(alarmAdapter);
@@ -69,9 +41,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent,1);
             }
         });
-        Intent intent = new Intent(this, MonServive.class);
-        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+//        for (Alarm alarm:alarmList) {
+//            String time = alarm.getTime() ;
+//            Intent intent = new Intent(this, MonServive.class);
+//            intent.putExtra("time", time);
+//            startService(intent);
+//        }
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
@@ -82,7 +59,19 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     case RESULT_OK:
                         Toast.makeText(this, "Done", Toast.LENGTH_SHORT).show();
+                        alarmList = bd.getAllAlram();
+                        alarmAdapter.clear();
+                        alarmAdapter.addAll(alarmList);
+                        alarmAdapter.notifyDataSetChanged();
+                        restartMainActivity();
+                        break;
                 }
-        }// switch
+        }
+    }
+    private void restartMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 }

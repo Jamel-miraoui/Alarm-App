@@ -36,10 +36,8 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
             // Display AM/PM based on the dayTime variable
             amPmTextView.setText(alarm.getDayTime());
-
             // Set the button state based on the alarm's activation status
             activateButton.setText(alarm.isStatut() ? "Deactivate" : "Activate");
-
             // Handle button click to toggle activation status
             activateButton.setOnClickListener(view -> {
                 // Toggle the activation status of the alarm

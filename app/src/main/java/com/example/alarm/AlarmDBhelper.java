@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
-
 import androidx.annotation.RequiresApi;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -20,8 +19,6 @@ public class AlarmDBhelper extends SQLiteOpenHelper {
     private static final String time = "time";
     private static final String don = "don";
     private static final String Statut = "Statut";
-
-
 
     private static final String REQUETE_CREATION_BD = "create table " + Table + " (" +
             id + " integer primary key autoincrement, " + time + " TEXT not null, " + don + " TEXT not null, " + Statut + " TEXT not null);" ;

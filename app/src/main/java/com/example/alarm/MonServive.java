@@ -1,61 +1,50 @@
     package com.example.alarm;
 
-    import static androidx.core.app.ActivityCompat.startActivityForResult;
-
-    import android.annotation.SuppressLint;
-    import android.app.Notification;
     import android.app.Service;
     import android.content.Intent;
-    import android.media.MediaPlayer;
-    import android.os.Binder;
     import android.os.Build;
     import android.os.IBinder;
     import android.util.Log;
-    import androidx.annotation.Nullable;
     import androidx.annotation.RequiresApi;
-    import com.example.alarm.Alarm;
     import java.time.LocalTime;
     import java.util.Calendar;
-
     public class MonServive extends Service {
-        private final IBinder binder = new MonBinder();
-        @Nullable
+        private Thread Thread;
+        private String time ;
+        public void onCreate() {
+            super.onCreate();
+            Thread = new Thread(new Runnable() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void run() {
+                   scheduleAlarm(time);
+                }
+            });
+        }
         @Override
         public IBinder onBind(Intent intent) {
-            return binder;
+            return null;
         }
-        @SuppressLint("NotificationId0")
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
-            if (intent != null) {
-                Alarm alarm = new Alarm("16:50", "AM", true);
-                scheduleAlarm(alarm);
-            }
-            startForeground(0, new Notification());
-            return START_NOT_STICKY;
+            this.time = intent.getStringExtra("time");
+            Thread.start();
+            return START_STICKY;
         }
         @RequiresApi(api = Build.VERSION_CODES.O)
-        private void scheduleAlarm(Alarm alarm) {
+        private void scheduleAlarm(String  alarm) {
             new Thread(() -> {
                 for (int i = 0; i < 10; i++) {
-                    Log.i("help", "onStartCommand: " + alarm.getTime());
+                    Log.i("help", "onStartCommand: " + alarm);
                 }
-                LocalTime alarmTime = LocalTime.parse(alarm.getTime());
+                LocalTime alarmTime = LocalTime.parse(alarm);
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(Calendar.HOUR_OF_DAY, alarmTime.getHour());
                 calendar.set(Calendar.MINUTE, alarmTime.getMinute());
                 calendar.set(Calendar.SECOND, 0);
                 long alarmMillis = calendar.getTimeInMillis();
-                long currentMillis = System.currentTimeMillis();
-                while (System.currentTimeMillis() <= alarmMillis) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    Log.i("alarm", String.valueOf(System.currentTimeMillis()));
-                }
+                while (System.currentTimeMillis() != alarmMillis) {Log.i("alarm", "waiting for " + alarmTime + "  ") ;}
                 Log.i("alarm", "Scheduled time has already passed.");
                 Intent intent = new Intent(MonServive.this, AlarmNt.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -68,12 +57,4 @@
             super.onDestroy();
             Log.i("alarm", "onDestroy: Service destroyed");
         }
-
-        public class MonBinder extends Binder {
-            MonServive getService() {
-                // Return the instance of MonService for clients to interact with
-                return MonServive.this;
-            }
-        }
-
     }
