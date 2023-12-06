@@ -32,7 +32,9 @@
             android:name=".MonServive"
             android:enabled="true"
             android:exported="false"
-            android:process=":my_background_process" />
+            android:process=":externalProcess"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            />
     </application>
 
 </manifest>
