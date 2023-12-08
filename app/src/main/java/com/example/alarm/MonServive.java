@@ -10,14 +10,15 @@
     import java.util.Calendar;
     public class MonServive extends Service {
         private Thread Thread;
-        private String time ;
+        private int  id ;
+        AlarmDBhelper db = new AlarmDBhelper(MonServive.this);
         public void onCreate() {
             super.onCreate();
             Thread = new Thread(new Runnable() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void run() {
-                   scheduleAlarm(time);
+                   scheduleAlarm(db.getAlarmById(id).getTime());
                 }
             });
         }
@@ -28,23 +29,28 @@
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public int onStartCommand(Intent intent, int flags, int startId) {
-            this.time = intent.getStringExtra("time");
+            this.id = Integer.parseInt(intent.getStringExtra("id"));
+            Log.i("TAG", "onStartCommand: " + this.id );
             Thread.start();
             return START_STICKY;
         }
         @RequiresApi(api = Build.VERSION_CODES.O)
-        private void scheduleAlarm(String  alarm) {
+        private void scheduleAlarm(String  alarmtime) {
             new Thread(() -> {
-                for (int i = 0; i < 10; i++) {
-                    Log.i("help", "onStartCommand: " + alarm);
-                }
-                LocalTime alarmTime = LocalTime.parse(alarm);
+                LocalTime alarmTime = LocalTime.parse(alarmtime);
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(Calendar.HOUR_OF_DAY, alarmTime.getHour());
                 calendar.set(Calendar.MINUTE, alarmTime.getMinute());
                 calendar.set(Calendar.SECOND, 0);
                 long alarmMillis = calendar.getTimeInMillis();
-                while (System.currentTimeMillis() != alarmMillis) {Log.i("alarm", "waiting for " + alarmTime + "  ") ;}
+                while (System.currentTimeMillis() < alarmMillis) {
+                    Alarm alarmid = db.getAlarmById(id);
+                    if(alarmid == null){
+                        stopSelf();
+                        return;
+                    }
+                    Log.i("alarm", "waiting for " + alarmTime) ;
+                }
                 Log.i("alarm", "Scheduled time has already passed.");
                 Intent intent = new Intent(MonServive.this, AlarmNt.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

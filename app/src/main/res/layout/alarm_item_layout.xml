@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
-
         <TextView
             android:id="@+id/alarmTimeTextView"
             android:layout_width="wrap_content"
@@ -20,7 +19,6 @@
             android:text="Alarm Time"
             android:textSize="18sp"
             android:textColor="#1E88E5"/>
-
         <TextView
             android:id="@+id/alarmDaysTextView"
             android:layout_width="wrap_content"
@@ -35,10 +33,8 @@
         android:id="@+id/activateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Activate/Deactivate"
+        android:text="Suprimer"
         android:textSize="14sp"
         android:textColor="#FFFFFF"
         android:background="@drawable/rounded_button"/>
-
-
 </LinearLayout>

@@ -33,7 +33,10 @@ public class MainActivity2 extends AppCompatActivity {
                     if( hour > 12) {alarm.setDayTime("PM") ; } else{alarm.setDayTime("AM");}
                     alarm.setStatut(true);
                 }
-                bd.insertAlarm(alarm);
+                long insertedId = bd.insertAlarm(alarm);
+                Intent intent = new Intent(MainActivity2.this, MonServive.class);
+                intent.putExtra("id", String.valueOf(insertedId));
+                startService(intent);
                 setResult(RESULT_OK);
                 finish();
             }

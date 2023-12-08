@@ -5,16 +5,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/lightGray">
-    <ListView
-        android:id="@+id/alarmListView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:divider="@color/dividerColor"
-        android:dividerHeight="1dp">
-    </ListView>
-
-    <!-- Add Alarm Button -->
+        android:layout_height="740dp">
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </LinearLayout>
+    </ScrollView>
     <Button
         android:id="@+id/addAlarmButton"
         android:text="Add Alarm"
@@ -23,5 +23,5 @@
         android:textColor="#FFFFFF"
         android:background="@drawable/rounded_button"
         android:textSize="18sp"
-        android:layout_margin="16dp"/>
+        android:layout_margin="10dp"/>
 </LinearLayout>

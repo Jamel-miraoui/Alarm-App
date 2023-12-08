@@ -12,7 +12,9 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.time.LocalTime;
@@ -20,19 +22,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private List<Alarm> alarmList;
-    private AlarmAdapter alarmAdapter;
+
     AlarmDBhelper bd = new AlarmDBhelper(MainActivity.this);
+    private List<Alarm> alarmList = new ArrayList<>();
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alarmlist);
+        LinearLayout alarmContainer =(LinearLayout)findViewById(R.id.parent);
         alarmList = bd.getAllAlram();
-        alarmAdapter = new AlarmAdapter(this, R.layout.alarm_item_layout, alarmList);
-        ListView alarmListView = findViewById(R.id.alarmListView);
-        alarmListView.setAdapter(alarmAdapter);
+//        alarmAdapter = new AlarmAdapter(this, R.layout.alarm_item_layout, alarmList);
+//        ListView alarmListView = findViewById(R.id.alarmListView);
+//        alarmListView.setAdapter(alarmAdapter);
         // Handle Add Alarm button click
+        // Assuming your Alarm class has methods like getAlarmTime(), getAlarmDays(), etc.
+        for (Alarm alarm : alarmList) {
+            View alarmItemView = getLayoutInflater().inflate(R.layout.alarm_item_layout, null);
+            TextView alarmTimeTextView = alarmItemView.findViewById(R.id.alarmTimeTextView);
+            TextView alarmDaysTextView = alarmItemView.findViewById(R.id.alarmDaysTextView);
+            Button supprimerButton = alarmItemView.findViewById(R.id.activateButton);
+            alarmTimeTextView.setText(alarm.getTime());
+            alarmDaysTextView.setText(alarm.getDayTime());
+            supprimerButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    bd.deleteAlarm(alarm.getId());
+                    restartMainActivity();
+                }
+            });
+            alarmContainer.addView(alarmItemView);
+        }
         Button addAlarmButton = findViewById(R.id.addAlarmButton);
         addAlarmButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -41,12 +61,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent,1);
             }
         });
-//        for (Alarm alarm:alarmList) {
-//            String time = alarm.getTime() ;
-//            Intent intent = new Intent(this, MonServive.class);
-//            intent.putExtra("time", time);
-//            startService(intent);
-//        }
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -60,9 +74,6 @@ public class MainActivity extends AppCompatActivity {
                     case RESULT_OK:
                         Toast.makeText(this, "Done", Toast.LENGTH_SHORT).show();
                         alarmList = bd.getAllAlram();
-                        alarmAdapter.clear();
-                        alarmAdapter.addAll(alarmList);
-                        alarmAdapter.notifyDataSetChanged();
                         restartMainActivity();
                         break;
                 }

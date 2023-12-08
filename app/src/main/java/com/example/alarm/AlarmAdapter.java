@@ -30,23 +30,18 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
             TextView timeTextView = convertView.findViewById(R.id.alarmTimeTextView);
             TextView amPmTextView = convertView.findViewById(R.id.alarmDaysTextView);
             Button activateButton = convertView.findViewById(R.id.activateButton);
-
             // Format LocalTime to display in TextView
             timeTextView.setText(alarm.getTime().toString());
-
             // Display AM/PM based on the dayTime variable
             amPmTextView.setText(alarm.getDayTime());
             // Set the button state based on the alarm's activation status
-            activateButton.setText(alarm.isStatut() ? "Deactivate" : "Activate");
-            // Handle button click to toggle activation status
-            activateButton.setOnClickListener(view -> {
-                // Toggle the activation status of the alarm
-                alarm.setStatut(!alarm.isStatut());
-                // Update the button text accordingly
-                activateButton.setText(alarm.isStatut() ? "Deactivate" : "Activate");
+            activateButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alarm.setStatut(false);
+                }
             });
         }
-
         return convertView;
     }
 }

@@ -30,5 +30,4 @@ public class AlarmNt extends AppCompatActivity {
             }
         });
     }
-
 }

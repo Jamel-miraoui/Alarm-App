@@ -39,21 +39,21 @@ public class AlarmDBhelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE " + Table + ";");
         onCreate(db);
     }
-    public void insertAlarm(Alarm alarm) {
+    public long insertAlarm(Alarm alarm) {
         SQLiteDatabase maDB = this.getWritableDatabase();
         ContentValues valeurs = new ContentValues();
         valeurs.put(time, alarm.getTime().toString()) ;
         valeurs.put(don, alarm.getDayTime());
         valeurs.put(Statut, alarm.isStatut());
-        maDB.insert(Table, null, valeurs);
-//        maDB.close();
+        long insertedId = maDB.insert(Table, null, valeurs);
+//      maDB.close();
+        return insertedId;
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     public ArrayList<Alarm> getAllAlram() {
         SQLiteDatabase maDb = this.getWritableDatabase();
         Cursor c = maDb.query(Table, new String[]{time,don,Statut,id}, null, null, null, null, null);
         return cursortoAlarms(c);}
-
     @SuppressLint("Range")
     @RequiresApi(api = Build.VERSION_CODES.O)
     private ArrayList<Alarm> cursortoAlarms(Cursor c) {
@@ -69,7 +69,33 @@ public class AlarmDBhelper extends SQLiteOpenHelper {
             alarm.setId(c.getInt(3));
             alarmList.add(alarm);
         } while (c.moveToNext());
-//        c.close();
+            c.close();
         return alarmList;
     }
+    public Alarm getAlarmById(int alarmId) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            for (Alarm alarm : this.getAllAlram()) {
+                if (alarm.getId() == alarmId) {
+                    return alarm;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void updateAlarmStatut(int alarmId, boolean newStatut) {
+        SQLiteDatabase maDB = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Statut, newStatut);
+        String whereClause = id + "=?";
+        String[] whereArgs = {String.valueOf(alarmId)};
+        maDB.update(Table, values, whereClause, whereArgs);
+    }
+
+    public void deleteAlarm(long id) {
+        SQLiteDatabase maDB = this.getWritableDatabase();
+        maDB.delete(Table, "id=?", new String[]{String.valueOf(id)});
+        maDB.close();
+    }
+
 }
