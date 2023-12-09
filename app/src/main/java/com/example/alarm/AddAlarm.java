@@ -5,15 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-
-public class MainActivity2 extends AppCompatActivity {
+public class AddAlarm extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +20,7 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 TimePicker timePicker = (TimePicker)findViewById(R.id.timePicker);
-                AlarmDBhelper bd = new AlarmDBhelper(MainActivity2.this);
+                AlarmDBhelper bd = new AlarmDBhelper(AddAlarm.this);
                 int hour = timePicker.getHour()  ;
                 int min = timePicker.getMinute();
                 Alarm alarm = new Alarm();
@@ -34,7 +30,7 @@ public class MainActivity2 extends AppCompatActivity {
                     alarm.setStatut(true);
                 }
                 long insertedId = bd.insertAlarm(alarm);
-                Intent intent = new Intent(MainActivity2.this, MonServive.class);
+                Intent intent = new Intent(AddAlarm.this, MyService.class);
                 intent.putExtra("id", String.valueOf(insertedId));
                 startService(intent);
                 setResult(RESULT_OK);

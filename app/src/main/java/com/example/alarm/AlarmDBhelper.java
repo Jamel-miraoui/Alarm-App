@@ -54,6 +54,7 @@ public class AlarmDBhelper extends SQLiteOpenHelper {
         SQLiteDatabase maDb = this.getWritableDatabase();
         Cursor c = maDb.query(Table, new String[]{time,don,Statut,id}, null, null, null, null, null);
         return cursortoAlarms(c);}
+
     @SuppressLint("Range")
     @RequiresApi(api = Build.VERSION_CODES.O)
     private ArrayList<Alarm> cursortoAlarms(Cursor c) {
@@ -81,15 +82,6 @@ public class AlarmDBhelper extends SQLiteOpenHelper {
             }
         }
         return null;
-    }
-
-    public void updateAlarmStatut(int alarmId, boolean newStatut) {
-        SQLiteDatabase maDB = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(Statut, newStatut);
-        String whereClause = id + "=?";
-        String[] whereArgs = {String.valueOf(alarmId)};
-        maDB.update(Table, values, whereClause, whereArgs);
     }
 
     public void deleteAlarm(long id) {
