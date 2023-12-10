@@ -101,14 +101,12 @@ public class MyService extends Service {
             stopSelf();
         }).start();
     }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         db.deleteAlarm(id);
         Log.i("alarm", "onDestroy: Service destroyed");
     }
-
     private void showNotification(String time) {
         createNotificationChannel();
         Log.i("Alarm", "Showing Notification");
@@ -117,7 +115,7 @@ public class MyService extends Service {
                 .setContentText(time + " has passed. Click to view.")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentIntent(pendingIntent)
-                .setAutoCancel(true) // Dismisses the notification when clicked
+                .setAutoCancel(true)
                 .build();
         notification.sound = Uri.parse("android.resource://" + getPackageName() + "/"+R.raw.alarm);
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
